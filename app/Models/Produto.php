@@ -14,10 +14,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $categoria_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Entrada[] $entradas
- * @property-read int|null $entradas_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Saida[] $saidas
- * @property-read int|null $saidas_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Produto newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Produto newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Produto query()
@@ -34,26 +30,4 @@ class Produto extends Model
 {
     protected $table = 'produto';
 
-    public function SaldoEstoque($saida_id, $sem_utilizar_saida_id_value_saida = true)
-    {
-        $entradas = $this->entradas()->sum('qnt');
-        if ($sem_utilizar_saida_id_value_saida)
-            $saidas = $this->saidas()->sum('qnt');
-        else
-            $saidas = $this->saidas()->where('id', '<>', $saida_id)->sum('qnt');
-
-        $inicial = $this->qnt_inicial;
-
-        return (float)$entradas - (float)$saidas + (float)$inicial;
-    }
-
-    public function entradas()
-    {
-        return $this->hasMany(Entrada::class, 'produto_id');
-    }
-
-    public function saidas()
-    {
-        return $this->hasMany(Saida::class, 'produto_id');
-    }
 }

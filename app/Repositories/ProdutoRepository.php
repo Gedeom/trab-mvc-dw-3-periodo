@@ -62,18 +62,18 @@ class ProdutoRepository implements ProdutoRepositoryInterface
         $validator = Validator::make($request->all(), [
             'nome' => 'required',
             'categoria' => 'required',
-            'qnt_inicial' => 'required|numeric|min:0|different:0',
-            'vlr_padrao' => 'required|numeric|min:0|different:0',
+            'qnt_inicial' => 'required|numeric|min:0|not_in:0',
+            'vlr_padrao' => 'required|numeric|min:0|not_in:0',
         ],
             [
                 'nome.required' => 'Informe o nome do produto!',
                 'categoria.required' => 'Informe a categoria!',
                 'qnt_inicial.required' => 'Informe a quantidade inicial do produto!',
                 'qnt_inicial.min' => 'Quantidade precisa ser maior que zero!',
-                'qnt_inicial.different' => 'Quantidade precisa ser maior que zero!',
+                'qnt_inicial.not_in' => 'Quantidade precisa ser maior que zero!',
                 'vlr_padrao.required' => 'Informe o valor padrão do produto!',
                 'vlr_padrao.min' => 'Valor precisa ser maior que zero!',
-                'vlr_padrao.different' => 'Valor precisa ser maior que zero!',
+                'vlr_padrao.not_in' => 'Valor precisa ser maior que zero!',
             ]);
 
         if ($validator->fails()) {
